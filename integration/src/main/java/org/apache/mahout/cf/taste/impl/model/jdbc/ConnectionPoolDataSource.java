@@ -115,6 +115,12 @@ public final class ConnectionPoolDataSource implements DataSource {
       Connection connection = underlyingDataSource.getConnection();
       connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
       connection.setHoldability(ResultSet.CLOSE_CURSORS_AT_COMMIT);
+      /* 
+       * C'è un falso positivo in questo punto. SonarQube ha rilevato il seguente bug individuabile dal tag "cwe":
+       * "Use try-with-resources or close this "Connection" in a "finally" clause."
+       * Naturalmente, la connessione non deve essere chiusa perchè questo metodo serve proprio per
+       * creare una connessione che poi dovrà essere restituita al metodo chiamante.
+       */
       return connection;
     }
   }
