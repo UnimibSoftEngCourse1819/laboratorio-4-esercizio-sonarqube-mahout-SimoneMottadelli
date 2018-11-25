@@ -92,6 +92,13 @@ public class Parameters {
     Map<String,String> params = Maps.newHashMap();
     DefaultStringifier<Map<String,String>> mapStringifier = new DefaultStringifier<>(conf,
         GenericsUtil.getClass(params));
+    
+    /*
+     * Falso positivo di SonarQube. L'errore identificato è 
+     * "Use try-with-resources or close this "DefaultStringifier" in a "finally" clause.", ma
+     * questo metodo non non deve fare la close di mapStringfier perchè deve ritornare tale oggetto
+     * al metodo chiamante.
+     */
     return mapStringifier.fromString(serializedString);
   }
 
