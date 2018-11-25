@@ -119,7 +119,7 @@ public class ObjectArrayList<T> extends AbstractObjectList<T> {
   @Override
   public Object clone() {
     // overridden for performance only.
-    return new ObjectArrayList<>((T[]) elements.clone());
+    return new ObjectArrayList<T>((T[]) elements.clone());
   }
 
   /**
@@ -188,9 +188,15 @@ public class ObjectArrayList<T> extends AbstractObjectList<T> {
     if (this == otherObj) {
       return true;
     }
-    if (otherObj == null) {
-      return false;
-    }
+   /*
+    *	if (otherObj == null) {
+    *	  return false;
+    * 	}
+    * 
+    *	E' possibile togliere questa istruzione if perchè l'oggetto otherObj sarà sempre diverso da false
+    *   e quindi è un controllo inutile. Infatti, l'espressione condizionale nell'if alla riga 185 è vera
+    *   se otherObj è null.
+    */
     ObjectArrayList<?> other = (ObjectArrayList<?>) otherObj;
     if (size() != other.size()) {
       return false;
@@ -325,14 +331,14 @@ public class ObjectArrayList<T> extends AbstractObjectList<T> {
   @SuppressWarnings("unchecked")
   public AbstractObjectList<T> partFromTo(int from, int to) {
     if (size == 0) {
-      return new ObjectArrayList<>(0);
+      return new ObjectArrayList<T>(0);
     }
 
     checkRangeFromTo(from, to, size);
 
     Object[] part = new Object[to - from + 1];
     System.arraycopy(elements, from, part, 0, to - from + 1);
-    return new ObjectArrayList<>((T[]) part);
+    return new ObjectArrayList<T>((T[]) part);
   }
 
   /** Reverses the elements of the receiver. Last becomes first, second last becomes second first, and so on. */
@@ -369,7 +375,7 @@ public class ObjectArrayList<T> extends AbstractObjectList<T> {
    * Replaces the element at the specified position in the receiver with the specified element; <b>WARNING:</b> Does not
    * check preconditions. Provided with invalid parameters this method may access invalid indexes without throwing any
    * exception! <b>You should only use this method when you are absolutely sure that the index is within bounds.</b>
-   * Precondition (unchecked): {@code index >= 0 && index < size()}.
+   * Precondition (unchecked): <tt>index &gt;= 0 && index &lt; size()</tt>.
    *
    * @param index   index of element to replace.
    * @param element element to be stored at the specified position.
