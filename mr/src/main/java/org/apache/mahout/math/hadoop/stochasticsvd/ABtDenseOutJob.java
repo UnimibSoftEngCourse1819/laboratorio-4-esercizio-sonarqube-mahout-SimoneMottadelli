@@ -248,37 +248,39 @@ public final class ABtDenseOutJob {
                * at very few elements without engaging them in any operations so
                * even then it should be ok.
                */
-              if (j < aRowBegin) {
-                continue;
-              }
+              
               if (j >= aRowBegin + bh) {
                 break;
               }
-
-              /*
-               * assume btVec is dense
-               */
-              if (xi != null) {
-                /*
-                 * MAHOUT-817: PCA correction for B'. I rewrite the whole
-                 * computation loop so i don't have to check if PCA correction
-                 * is needed at individual element level. It looks bulkier this
-                 * way but perhaps less wasteful on cpu.
-                 */
-                for (int s = 0; s < kp; s++) {
-                  // code defensively against shortened xi
-                  double xii = xi.size() > btIndex ? xi.get(btIndex) : 0.0;
-                  yiCols[s][j - aRowBegin] +=
-                    aEl.get() * (btVec.getQuick(s) - xii * sq.get(s));
-                }
-              } else {
-                /*
-                 * no PCA correction
-                 */
-                for (int s = 0; s < kp; s++) {
-                  yiCols[s][j - aRowBegin] += aEl.get() * btVec.getQuick(s);
-                }
+              
+              if (j >= aRowBegin) {
+            	  /*
+                   * assume btVec is dense
+                   */
+                  if (xi != null) {
+                    /*
+                     * MAHOUT-817: PCA correction for B'. I rewrite the whole
+                     * computation loop so i don't have to check if PCA correction
+                     * is needed at individual element level. It looks bulkier this
+                     * way but perhaps less wasteful on cpu.
+                     */
+                    for (int s = 0; s < kp; s++) {
+                      // code defensively against shortened xi
+                      double xii = xi.size() > btIndex ? xi.get(btIndex) : 0.0;
+                      yiCols[s][j - aRowBegin] +=
+                        aEl.get() * (btVec.getQuick(s) - xii * sq.get(s));
+                    }
+                  } else {
+                    /*
+                     * no PCA correction
+                     */
+                    for (int s = 0; s < kp; s++) {
+                      yiCols[s][j - aRowBegin] += aEl.get() * btVec.getQuick(s);
+                    }
+                  }
               }
+
+             
 
             }
             if (lastRowIndex < j) {
