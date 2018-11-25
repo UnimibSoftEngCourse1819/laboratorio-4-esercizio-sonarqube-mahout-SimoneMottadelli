@@ -69,12 +69,17 @@ public class DisplayFuzzyKMeans extends DisplayClustering {
     int maxIterations = 10;
     float threshold = 0.001F;
     float m = 1.1F;
-    if (runClusterer) {
-      runSequentialFuzzyKClusterer(conf, samples, output, measure, maxIterations, m, threshold);
-    } else {
-      int numClusters = 3;
-      runSequentialFuzzyKClassifier(conf, samples, output, measure, numClusters, maxIterations, m, threshold);
-    }
+    
+    runSequentialFuzzyKClusterer(conf, samples, output, measure, maxIterations, m, threshold);
+   /*   Istruzione if-else tolta perchè, comunque, si sarebbe entrati sempre nell'if e mai nell'else.
+    *   Non è però da escludere il fatto che sia sbagliata la logica del programma... Come mai sono state
+    *   inserite istruzioni nell'else se questo ramo non veniva mai eseguito? 
+    *   
+    *	else {
+    * 		int numClusters = 3;
+    * 		runSequentialFuzzyKClassifier(conf, samples, output, measure, numClusters, maxIterations, m, threshold);
+    *	} 
+    */
     new DisplayFuzzyKMeans();
   }
   
