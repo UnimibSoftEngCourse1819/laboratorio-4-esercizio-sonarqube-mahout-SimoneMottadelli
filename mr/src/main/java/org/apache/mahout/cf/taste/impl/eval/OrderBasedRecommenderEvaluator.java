@@ -292,21 +292,20 @@ public final class OrderBasedRecommenderEvaluator {
     for (int i = 0; i < nitems; i++) {
       long itemID = itemsR[i];
       for (int j = bottom; j <= top; j++) {
-        if (itemsL[j] == null) {
-          continue;
-        }
-        long test = itemsL[j];
-        if (itemID == test) {
-          vectorZ[i] = i - j;
-          vectorZabs[i] = Math.abs(i - j);
-          if (j == bottom) {
-            bottom++;
-          } else if (j == top) {
-            top--;
-          } else {
-            itemsL[j] = null;
-          }
-          break;
+        if (itemsL[j] != null) {
+        	long test = itemsL[j];
+        	if (itemID == test) {
+        		vectorZ[i] = i - j;
+        		vectorZabs[i] = Math.abs(i - j);
+        		if (j == bottom) {
+        			bottom++;
+        		} else if (j == top) {
+        			top--;
+        		} else {
+        			itemsL[j] = null;
+        		}
+        		break;
+        	}         
         }
       }
     }
